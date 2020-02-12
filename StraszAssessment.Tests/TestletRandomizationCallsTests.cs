@@ -5,7 +5,7 @@ using Xunit;
 
 namespace StraszAssessment.Tests
 {
-    public class TestletRandomization
+    public class TestletRandomizationCallsTests
     {
         [Fact(DisplayName = "Randomization algorithm is called and used for randomization within a testlet")]
         public void AlgorithmIsCalled()
