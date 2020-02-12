@@ -6,19 +6,20 @@ namespace StraszAssessment.Core
     {
         public string TestletId { get; }
 
-        private List<TestletItem> items;
+        private readonly List<TestletItem> items;
 
-        public Testlet(string testletId, List<TestletItem> items)
+        private readonly IRandomizationAlgorithm randomizationAlgorithm;
+
+        public Testlet(string testletId, List<TestletItem> items, IRandomizationAlgorithm randomizationAlgorithm)
         {
             TestletId = testletId;
             this.items = items;
+            this.randomizationAlgorithm = randomizationAlgorithm;
         }
 
         public List<TestletItem> Randomize()
         {
-            //Items private collection has 6 Operational and 4 Pretest Items. Randomize the order of these items as per the requirement (with TDD)
-            //The assignment will be reviewed on the basis of – Tests written first, Correct logic, Well structured & clean readable code.
-            return new List<TestletItem>();
+            return this.randomizationAlgorithm.Randomize(this.items);
         }
     }
 }

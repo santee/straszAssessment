@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Moq;
 using StraszAssessment.Core;
 using Xunit;
 
 namespace StraszAssessment.Tests
 {
-    public class TestletBadInputTests
+    public class RandomizationBadInputTests
     {
         public static IEnumerable<object[]> GetNotEnoughPretestsTestData()
         {
@@ -31,7 +32,7 @@ namespace StraszAssessment.Tests
         [MemberData(nameof(GetNotEnoughPretestsTestData))]
         public void NotEnoughPretests(List<TestletItem> items, int pretestsCount)
         {
-            var testlet = new Testlet("testletId", items);
+            var testlet = new Testlet("testletId", items, Mock.Of<IRandomizationAlgorithm>());
             Assert.Throws<InvalidOperationException>(() => testlet.Randomize());
         }
     }
