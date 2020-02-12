@@ -33,8 +33,8 @@ namespace StraszAssessment.Tests
         public void NotEnoughPretests(List<TestletItem> items, int startWithNPretests)
         {
             var random = new Random(42);
-            var testlet = new Testlet("testletId", items, new SomePretestsFirstRandomization(startWithNPretests, random));
-            Assert.Throws<InvalidOperationException>(() => testlet.Randomize());
+            var testlet = new SomePretestsFirstRandomization(startWithNPretests, random);
+            Assert.Throws<InvalidOperationException>(() => testlet.Randomize(items));
         }
     }
 }
