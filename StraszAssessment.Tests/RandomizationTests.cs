@@ -34,7 +34,7 @@ namespace StraszAssessment.Tests
 
             Assert.Equal(totalCount, randomized.Count);
             Assert.True(totalCount == randomized.Distinct().Count(), "Some values are used more than once");
-            Assert.True(randomized.Take(pretestsCount).All(x => x.TestletItemType == TestletItemTypeEnum.Operational));
+            Assert.True(randomized.Take(startWithNPretests).All(x => x.TestletItemType == TestletItemTypeEnum.Pretest), "Doesn't start with proper number of pretests");
             Assert.False(randomized.SequenceEqual(testData), "Randomized sequence equals source data");
         }
     }
