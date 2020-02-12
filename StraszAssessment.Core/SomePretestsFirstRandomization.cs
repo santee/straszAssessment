@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace StraszAssessment.Core
 {
@@ -19,7 +20,19 @@ namespace StraszAssessment.Core
 
         public List<TestletItem> Randomize(IReadOnlyList<TestletItem> source)
         {
-            throw new System.NotImplementedException();
+            //create a copy
+            var result = source.ToList();
+
+            //shuffle
+            for (var i = result.Count - 1; i > 0; i--)
+            {
+                var j = this.random.Next(0, i + 1);
+                var temp = result[i];
+                result[i] = result[j];
+                result[j] = temp;
+            }
+
+            return result;
         }
     }
 }
