@@ -4,6 +4,6 @@ namespace StraszAssessment.Core
 {
     public interface IRandomizationAlgorithm
     {
-        List<T> Randomize<T>(IReadOnlyList<T> source);
+        List<TestletItem> Randomize(IReadOnlyList<TestletItem> source);
     }
 }

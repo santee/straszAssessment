@@ -30,9 +30,10 @@ namespace StraszAssessment.Tests
 
         [Theory(DisplayName = "Test fails when there are not enough pretests")]
         [MemberData(nameof(GetNotEnoughPretestsTestData))]
-        public void NotEnoughPretests(List<TestletItem> items, int pretestsCount)
+        public void NotEnoughPretests(List<TestletItem> items, int startWithNPretests)
         {
-            var testlet = new Testlet("testletId", items, Mock.Of<IRandomizationAlgorithm>());
+            var random = new Random(42);
+            var testlet = new Testlet("testletId", items, new SomePretestsFirstRandomization(startWithNPretests, random));
             Assert.Throws<InvalidOperationException>(() => testlet.Randomize());
         }
     }
