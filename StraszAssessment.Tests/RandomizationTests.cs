@@ -25,9 +25,9 @@ namespace StraszAssessment.Tests
                 .Select(x => new TestletItem(x.ToString(), TestletItemTypeEnum.Operational))
                 .ToList();
 
-            for (var i = 0; i < pretestsCount; i++)
+            for (var i = pretestsCount - 1; i >= 0; i--)
             {
-                testData[random.Next(0, totalCount - 1)] = new TestletItem("pretest" + i, TestletItemTypeEnum.Pretest);
+                testData[i] = new TestletItem("pretest" + i, TestletItemTypeEnum.Pretest);
             }
 
             var randomized = algorithm.Randomize(testData);
