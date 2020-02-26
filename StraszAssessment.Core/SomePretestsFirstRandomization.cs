@@ -5,7 +5,7 @@ using System.Linq;
 namespace StraszAssessment.Core
 {
     /// <summary>
-    /// Randomizes the list that it puts N pretests in the beginning
+    /// Randomizes the list that it puts N pretests in the beginning. O(N)
     /// </summary>
     public class SomePretestsFirstRandomization : IRandomizationAlgorithm
     {
@@ -27,24 +27,16 @@ namespace StraszAssessment.Core
                 throw new InvalidOperationException(NotEnoughPretestsError);
             }
 
-            //create a copy
-            var result = source.ToList();
-            var pretestIds = new Queue<int>(source.Count);
+            //create a shuffled copy
+            var result = this.ShuffleList(source);
+            this.PutPretestsInTheBeginning(result);
 
-            //shuffle
-            for (var i = result.Count - 1; i >= 0; i--)
-            {
-                var j = this.random.Next(0, i + 1);
-                var temp = result[i];
-                result[i] = result[j];
-                result[j] = temp;
+            return result;
+        }
 
-                if (result[i].TestletItemType == TestletItemTypeEnum.Pretest)
-                {
-                    //store pretest id for a future use
-                    pretestIds.Enqueue(i);
-                }
-            }
+        private void PutPretestsInTheBeginning(List<TestletItem> result)
+        {
+            var pretestIds = FindPretestsIndices(result);
 
             if (pretestIds.Count < startWithNPretests)
             {
@@ -54,16 +46,46 @@ namespace StraszAssessment.Core
             //put pretests in the beginning
             for (var i = 0; i < startWithNPretests; i++)
             {
-                var pretestId = pretestIds.Dequeue();
+                //take a pretest id from a tail
+                var pretestId = pretestIds.Pop();
                 if (result[i].TestletItemType != TestletItemTypeEnum.Pretest)
                 {
-                    var temp = result[i];
-                    result[i] = result[pretestId];
-                    result[pretestId] = temp;
+                    Swap(result, i, pretestId);
+                }
+            }
+        }
+
+        private static Stack<int> FindPretestsIndices(IReadOnlyList<TestletItem> source)
+        {
+            var result = new Stack<int>(source.Count);
+            for (var i = 0; i < source.Count; i++)
+            {
+                if (source[i].TestletItemType == TestletItemTypeEnum.Pretest)
+                {
+                    result.Push(i);
                 }
             }
 
             return result;
+        }
+
+        private List<TestletItem> ShuffleList(IReadOnlyList<TestletItem> source)
+        {
+            var result = source.ToList();
+            for (var i = result.Count - 1; i >= 0; i--)
+            {
+                var j = this.random.Next(0, i + 1);
+                Swap(result, i, j);
+            }
+
+            return result;
+        }
+
+        private static void Swap<T>(IList<T> source, int index0, int index1)
+        {
+            var temp = source[index0];
+            source[index0] = source[index1];
+            source[index1] = temp;
         }
     }
 }
